@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Incognito</string>
+    <string name="comments"> Comments</string>
+    <string name="like">Like</string>
+    <string name="share">Share</string>
+    <string name="options">Options</string>
+</resources>
