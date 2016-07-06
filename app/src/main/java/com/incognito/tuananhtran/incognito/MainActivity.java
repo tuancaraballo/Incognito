@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     ImageButton upload;
 
 
+    //--> 4 - START THE CAMERA INTENT HERE AFTER THE USER HAS ACCEPTED THE PERMISSION TO USE HIS CAMERA
     @Override
     public void onRequestPermissionsResult(int requestCode, String [] permissions,
                                            int [] grantResults ){
@@ -96,9 +97,10 @@ public class MainActivity extends AppCompatActivity {
                                         });
                         }
 
-
-                        //--> request a permission, when the user get back to you
-                        // you will process it in the on RequestPermission results
+                        //--> 3 - REQUEST THE PERMISSION: THIS FUNCTION WILL POP UP A DIALOG BOX
+                        // ASKING THE USER FOR PERMISSION. NOTICE THAT THE SAME CODE YOU HAVE
+                        // BELOW UNDER THE ELSE YOU SHOULD HAVE IT ON REQUESTPERMISSIONRESULT
+                        // because it's a call back so you don't when the user will respond.
                         ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA},
                                 REQUEST_CODE_ASK_PERMISSIONS);
                     }else{
@@ -117,11 +119,32 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
-
     }
 
+    @Override
+    protected  void onActivityResult(int requestCode, int resultCode, Intent data){
+
+        Log.d("MyCameraApp",  "GOT TO ACTIVITY RESULT!");
+        if(requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE){
+            if(resultCode == RESULT_OK){
+                //-->Image captured and saved to fileUri specified in the intent
+                Log.d("MyCameraApp",  "RESULT_OK!");
+
+//                Toast.makeText(this, "Image saved to:\n" +
+//                        data.getData(), Toast.LENGTH_LONG).show();
+            } else if(resultCode == RESULT_CANCELED){
+                Log.d("MyCameraApp",  "RESULT_CANCELED!");
+                // user cancelled the image capture
+            }else{
+                Log.d("MyCameraApp",  "CAMERA FAILED");
+               // image capture failed, advise  user
+            }
+        }
+    }
+
+    /*
+       Description: This is a message to display upon the rationale of the user.
+     */
     void showMessageOkCancel(String message,  DialogInterface.OnClickListener okListener){
         new AlertDialog.Builder(MainActivity.this)
                 .setMessage(message)
@@ -130,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
                 .create()
                 .show();
     }
+
 
 
     @Override
@@ -158,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
         String state = Environment.getExternalStorageState();
         boolean file_creation = true;
 
-        Log.d(TAG, "beginning before checking if SD is mounted");
+
         if((!Environment.MEDIA_MOUNTED.equals(state))){
             return null;     //--> returns null if external storage is not mounted
         }
