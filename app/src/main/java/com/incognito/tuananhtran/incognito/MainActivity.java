@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static String TAG = "TEST";
     ImageButton upload;
+    ImageView image;
 
 
     //--> 4 - START THE CAMERA INTENT HERE AFTER THE USER HAS ACCEPTED THE PERMISSION TO USE HIS CAMERA
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode){
             case REQUEST_CODE_ASK_PERMISSIONS:
                 if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    Log.d("MyCameraApp",  "GOT TO OnRequest PermissionResult!");
                     // Permission has been granted by the user, so repeat the same code as in the else
                     cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE); //-> create a file to save img
@@ -65,7 +68,8 @@ public class MainActivity extends AppCompatActivity {
         //setHasOptionsmenu(true);
         setContentView(R.layout.activity_main);
         upload  = (ImageButton) findViewById(R.id.upload);
-
+        image = (ImageView) findViewById(R.id.photo);
+        fileUri = null;
 
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,7 +127,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected  void onActivityResult(int requestCode, int resultCode, Intent data){
-
+        super.onActivityResult(requestCode,resultCode,data);
+       // image.setImageDrawable(Drawable.createFromPath(photoPathname));
         Log.d("MyCameraApp",  "GOT TO ACTIVITY RESULT!");
         if(requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE){
             if(resultCode == RESULT_OK){
@@ -188,16 +193,16 @@ public class MainActivity extends AppCompatActivity {
         }
         Log.d(TAG, "It pass the SD mounted test");
         // 1- Create a photo directory for my application
-        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Incognito_Pictures");
+        File photosDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Incognito");
 
         // 2- Check that the directory exists, if not create a new one
 
-        if(!mediaStorageDir.exists()) {
+        if(!photosDirectory.exists()) {
             Log.d("MyCameraApp", "The directory doesn't exist, creating a new one");
-            file_creation = mediaStorageDir.mkdir();
+            file_creation = photosDirectory.mkdirs();
 
             if(!file_creation){
-                Log.d("MyCameraApp", "It already exists" + file_creation);
+                Log.d("MyCameraApp", "FILE CREATION FAILED" + file_creation);
                // return null;
             }
 
@@ -208,8 +213,8 @@ public class MainActivity extends AppCompatActivity {
         File mediaFile;
 
         if(type == MEDIA_TYPE_IMAGE){ //--> if it's an image
-           // photoPathname = mediaStorageDir.getPath() + File.separator + "IMG_"+ timeStamp + ".jpg";
-            mediaFile = new File(mediaStorageDir.getPath() + File.separator + "IMG_"+ timeStamp + ".jpg");
+            photoPathname = photosDirectory.getPath() + File.separator + "IMG_"+ timeStamp + ".jpg";
+            mediaFile = new File(photoPathname);
 
         }else{
             return null;
