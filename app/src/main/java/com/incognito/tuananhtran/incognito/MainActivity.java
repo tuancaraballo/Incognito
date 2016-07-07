@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -77,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 // --> 0 - CHECK THAT API >= 23, OTHERWISE DON'T EVEN BOTHER TO DO THIS,
                 //    remember that older versions require permissions upon installation, not at
                 //    run time.
+                Log.d(TAG, " CLICKED ON THE BUTTON");
                 if (Build.VERSION.SDK_INT >= 23) {
                     //--> 1 - CHECK THAT THE CAMERA PERMISSION EXISTS:
                     int permitted = ActivityCompat.checkSelfPermission(getApplicationContext(),
@@ -134,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
             if(resultCode == RESULT_OK){
                 //-->Image captured and saved to fileUri specified in the intent
                 Log.d("MyCameraApp",  "RESULT_OK!");
-
+                image.setImageDrawable(Drawable.createFromPath(photoPathname));
 //                Toast.makeText(this, "Image saved to:\n" +
 //                        data.getData(), Toast.LENGTH_LONG).show();
             } else if(resultCode == RESULT_CANCELED){
@@ -167,6 +169,20 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+
+
+
+    public static File getAlbumStorageDir(String albumName) {
+        // Get the directory for the user's public pictures directory.
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), albumName);
+        if (!file.mkdirs()) {
+            //This is also the case if the directory already existed
+            Log.i("wall-splash", "Directory not created");
+        }
+        return file;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
        super.onCreateOptionsMenu(menu);
@@ -186,26 +202,28 @@ public class MainActivity extends AppCompatActivity {
         // 0 - Check that SD card is mounted:
         String state = Environment.getExternalStorageState();
         boolean file_creation = true;
+        File photosDirectory;
 
 
         if((!Environment.MEDIA_MOUNTED.equals(state))){
             return null;     //--> returns null if external storage is not mounted
         }
         Log.d(TAG, "It pass the SD mounted test");
-        // 1- Create a photo directory for my application
-        File photosDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Incognito");
 
+//      1- Create a photo directory for my application
+        photosDirectory = new File (Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"IncognitoPhotos");
         // 2- Check that the directory exists, if not create a new one
-
         if(!photosDirectory.exists()) {
             Log.d("MyCameraApp", "The directory doesn't exist, creating a new one");
-            file_creation = photosDirectory.mkdirs();
+            //file_creation = photosDirectory.mkdirs();
 
-            if(!file_creation){
-                Log.d("MyCameraApp", "FILE CREATION FAILED" + file_creation);
-               // return null;
+            if(!photosDirectory.mkdirs()){
+           // if (!photosDirectory.mkdirs()){
+                Log.d("MyCameraApp", "FILE CREATION FAILED  " );
+                //return null;
+            }else{
+                Log.d("MyCameraApp", "FILE CREATION SUCCEEDED ");
             }
-
         }
 
         // 3- Create the media File
