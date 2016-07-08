@@ -4,7 +4,8 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -136,7 +138,16 @@ public class MainActivity extends AppCompatActivity {
             if(resultCode == RESULT_OK){
                 //-->Image captured and saved to fileUri specified in the intent
                 Log.d("MyCameraApp",  "RESULT_OK!");
-                image.setImageDrawable(Drawable.createFromPath(photoPathname));
+
+
+                try{
+                    Uri targetUri = data.getData();
+                    Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
+                    image.setImageBitmap(bitmap);
+                }catch (FileNotFoundException fnfe){
+                    Log.wtf("onActivityResult", fnfe);
+                }
+
 //                Toast.makeText(this, "Image saved to:\n" +
 //                        data.getData(), Toast.LENGTH_LONG).show();
             } else if(resultCode == RESULT_CANCELED){
@@ -173,15 +184,15 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    public static File getAlbumStorageDir(String albumName) {
-        // Get the directory for the user's public pictures directory.
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), albumName);
-        if (!file.mkdirs()) {
-            //This is also the case if the directory already existed
-            Log.i("wall-splash", "Directory not created");
-        }
-        return file;
-    }
+//    public static File getAlbumStorageDir(String albumName) {
+//        // Get the directory for the user's public pictures directory.
+//        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), albumName);
+//        if (!file.mkdirs()) {
+//            //This is also the case if the directory already existed
+//            Log.i("wall-splash", "Directory not created");
+//        }
+//        return file;
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
@@ -228,16 +239,16 @@ public class MainActivity extends AppCompatActivity {
 
         // 3- Create the media File
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        File mediaFile;
+        File photoFile;
 
         if(type == MEDIA_TYPE_IMAGE){ //--> if it's an image
             photoPathname = photosDirectory.getPath() + File.separator + "IMG_"+ timeStamp + ".jpg";
-            mediaFile = new File(photoPathname);
+            photoFile = new File(photoPathname);
 
         }else{
             return null;
         }
-        return mediaFile;
+        return photoFile;
 
     }
 
