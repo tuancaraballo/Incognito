@@ -44,7 +44,8 @@ public class MainActivity extends AppCompatActivity {
 
     /*
     THings to do:
-        Figure out how to update the photo taken to the the ImageView
+        1- Figure out how to update the photo taken to the the ImageView
+        2- After that figure out the recyclerView, store it locally first
 
     */
 
