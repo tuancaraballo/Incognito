@@ -18,7 +18,6 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -48,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         2- After that figure out the recyclerView, store it locally first
         3- Figure out how to save the photo to firebase
         4- Figure out how to blur the picture
+
 
     */
 
@@ -157,6 +157,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /*
+     |  Purpose: This is the method that is called after the camera snaps the picture
+     |           and returns back to MainActivity
+     |Arguments: requestCode: this is a constant defined by you, in case that for example the
+     |                        camera takes video and image, you want to know what type of data
+     |                        you are dealing with
+     |            resultCode: defined by android RESULT_OK
+     |                   data: photo or video passed to MainActivity from Camera Activity
+     |    Notes: Be aware that if the cameraActivity rotates the screen, then the data is lost
+     |            so this is why you want to have the methods onSavedInstanceState and onRestoreInstanceState
+     */
     @Override
     protected  void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode,resultCode,data);
@@ -174,8 +185,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
 
-
-                Toast.makeText(this, "Image saved to:\n" + data.getData(), Toast.LENGTH_LONG).show();
+              //  Toast.makeText(this, "Image saved to:\n" + data.getData(), Toast.LENGTH_LONG).show();
             } else if(resultCode == RESULT_CANCELED){
                 Log.d("MyCameraApp",  "RESULT_CANCELED!");
                 // user cancelled the image capture
