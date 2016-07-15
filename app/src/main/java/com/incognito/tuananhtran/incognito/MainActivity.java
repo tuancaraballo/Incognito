@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putString(MediaStore.EXTRA_OUTPUT, fileUri.toString());
-        //savedInstanceState.putString("image", image.toString());
+        savedInstanceState.putString("photoId", image.toString());
         super.onSaveInstanceState(savedInstanceState);
 
     }
@@ -168,32 +168,38 @@ public class MainActivity extends AppCompatActivity {
      |                   data: photo or video passed to MainActivity from Camera Activity
      |    Notes: Be aware that if the cameraActivity rotates the screen, then the data is lost
      |            so this is why you want to have the methods onSavedInstanceState and onRestoreInstanceState
+     
      */
     @Override
     protected  void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode,resultCode,data);
-       // image.setImageDrawable(Drawable.createFromPath(photoPathname));
-        //Log.d("MyCameraApp",  "GOT TO ACTIVITY RESULT!");
 
         if(requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE){
             if(resultCode == RESULT_OK){
-                if(data == null){
-                    Log.d(TAG, "The intent is empty/null");
-                    Log.d(TAG, "CHEcking fileUri:  " + fileUri.toString());
-                    File myFile = new File(fileUri.getPath());
-                     Log.d(TAG,"Checking File path name: " + myFile.getAbsolutePath());
-                    Bitmap imageBitMapA = BitmapFactory.decodeFile(myFile.getAbsolutePath());
-                    Bitmap imageBitMapB = BitmapFactory.decodeFile(myFile.getPath());
-                    Log.d(TAG,"BitmapA: " + imageBitMapA.toString());
-                    Log.d(TAG,"BitmapB: " + imageBitMapB.toString());
-                    image = (ImageView) findViewById(R.id.photo);
-                  //  Bitmap bitMapC = (Bitmap) fileUri;
-                    image.setImageBitmap(imageBitMapB);
-
-                }else{
-                    Log.d(TAG, "The intent is NOT empty");
+                image = (ImageView) findViewById(R.id.photo);
+                Bitmap imageBitMapA;
+                if(data != null){ //--> if data was saved on the intent
+                    Bundle extras = data.getExtras();
+                    fileUri = fileUri.parse(extras.getString(MediaStore.EXTRA_OUTPUT));
                 }
+                //--> if data wasn't saved on the intent, then fileUri's data was saved on
+                // onSavedInstanceState and restored on onRestoreInstanceState
 
+                File myFile = new File(fileUri.getPath());
+                imageBitMapA = BitmapFactory.decodeFile(myFile.getAbsolutePath());
+                image.setImageBitmap(imageBitMapA);
+//
+//                if(data == null){ //--> Camera might have forced a rotation, so data was lost,
+//                                  // but luckily you saved it before that.
+//                    File myFile = new File(fileUri.getPath());
+//                    imageBitMapA = BitmapFactory.decodeFile(myFile.getAbsolutePath());
+//                    image.setImageBitmap(imageBitMapA);
+//
+//                }else{ //--> There is stuff in data, so use this info
+//                    Log.d(TAG, "The intent is NOT empty");
+//                    Bundle extras = data.getExtras();
+//                    fileUri = fileUri.parse(extras.getString(MediaStore.EXTRA_OUTPUT));
+//                }
 
               //  Toast.makeText(this, "Image saved to:\n" + data.getData(), Toast.LENGTH_LONG).show();
             } else if(resultCode == RESULT_CANCELED){
