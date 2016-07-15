@@ -10,118 +10,124 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.incognito.tuananhtran.incognito.MainActivity">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/profilepic"
-            android:maxHeight="30dp"
-            android:maxWidth="30dp"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"
-            android:layout_marginRight="4dp"
-            android:id="@+id/photo"
-            />
-        <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="\@tuan_stanford"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:text="Where am I at ?"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="#drinkingCocktails #chillingWithCinthia"/>
-
-    </LinearLayout>
-
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        >
-
-
-        <ImageView
-            android:layout_marginTop="5dp"
-            android:adjustViewBounds="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scaleType="fitCenter"
-            android:src="@drawable/blur2"/>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:orientation="vertical">
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Londres"
-            />
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Miami"
-                />
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Madrid"
-                />
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="India"
-                />
-        </LinearLayout>
-    </RelativeLayout>
-
-    <LinearLayout
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/photo"/>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/comments"
-            android:padding="2dp"/>
+    <!--<LinearLayout-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="horizontal"-->
+        <!--&gt;-->
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/like"
-            android:paddingRight="0dp"
-            android:paddingLeft="0dp"
-            />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/share"
-            android:padding="2dp"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/options"
-            android:padding="2dp"/>
-    </LinearLayout>
+        <!--<ImageView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@drawable/profilepic"-->
+            <!--android:maxHeight="30dp"-->
+            <!--android:maxWidth="30dp"-->
+            <!--android:scaleType="fitCenter"-->
+            <!--android:adjustViewBounds="true"-->
+            <!--android:layout_marginRight="4dp"-->
+            <!--android:id="@+id/photo"-->
+            <!--/>-->
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="\@tuan_stanford"/>-->
+
+    <!--</LinearLayout>-->
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="horizontal">-->
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textStyle="bold"-->
+        <!--android:text="Where am I at ?"/>-->
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="#drinkingCocktails #chillingWithCinthia"/>-->
+
+    <!--</LinearLayout>-->
+
+
+    <!--<RelativeLayout-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+
+        <!--&gt;-->
+
+
+        <!--<ImageView-->
+            <!--android:layout_marginTop="5dp"-->
+            <!--android:adjustViewBounds="true"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:scaleType="fitCenter"-->
+            <!--android:src="@drawable/blur2"/>-->
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:orientation="vertical">-->
+        <!--<Button-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Londres"-->
+            <!--/>-->
+            <!--<Button-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Miami"-->
+                <!--/>-->
+            <!--<Button-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Madrid"-->
+                <!--/>-->
+            <!--<Button-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="India"-->
+                <!--/>-->
+        <!--</LinearLayout>-->
+    <!--</RelativeLayout>-->
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+
+        <!--<Button-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/comments"-->
+            <!--android:padding="2dp"/>-->
+
+        <!--<Button-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/like"-->
+            <!--android:paddingRight="0dp"-->
+            <!--android:paddingLeft="0dp"-->
+            <!--/>-->
+        <!--<Button-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/share"-->
+            <!--android:padding="2dp"/>-->
+        <!--<Button-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/options"-->
+            <!--android:padding="2dp"/>-->
+    <!--</LinearLayout>-->
 
 
 

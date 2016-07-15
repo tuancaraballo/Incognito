@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -179,6 +180,15 @@ public class MainActivity extends AppCompatActivity {
                 if(data == null){
                     Log.d(TAG, "The intent is empty/null");
                     Log.d(TAG, "CHEcking fileUri:  " + fileUri.toString());
+                    File myFile = new File(fileUri.getPath());
+                     Log.d(TAG,"Checking File path name: " + myFile.getAbsolutePath());
+                    Bitmap imageBitMapA = BitmapFactory.decodeFile(myFile.getAbsolutePath());
+                    Bitmap imageBitMapB = BitmapFactory.decodeFile(myFile.getPath());
+                    Log.d(TAG,"BitmapA: " + imageBitMapA.toString());
+                    Log.d(TAG,"BitmapB: " + imageBitMapB.toString());
+                    image = (ImageView) findViewById(R.id.photo);
+                  //  Bitmap bitMapC = (Bitmap) fileUri;
+                    image.setImageBitmap(imageBitMapB);
 
                 }else{
                     Log.d(TAG, "The intent is NOT empty");
@@ -216,19 +226,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-
-
-
-//    public static File getAlbumStorageDir(String albumName) {
-//        // Get the directory for the user's public pictures directory.
-//        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), albumName);
-//        if (!file.mkdirs()) {
-//            //This is also the case if the directory already existed
-//            Log.i("wall-splash", "Directory not created");
-//        }
-//        return file;
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
