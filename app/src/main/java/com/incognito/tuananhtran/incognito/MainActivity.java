@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     THings to do:
         1- Figure out how to update the photo taken to the the ImageView
         2- After that figure out the recyclerView, store it locally first
+        3- Figure out how to save the photo to firebase
 
     */
 
