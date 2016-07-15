@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,9 +18,9 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -37,10 +36,17 @@ public class MainActivity extends AppCompatActivity {
 
     private static  Intent cameraIntent;
 
+    private Bitmap CapturedImageBitmap;
+
     private static String TAG = "TEST";
     ImageButton upload;
     ImageView image;
 
+    /*
+    THings to do:
+        Figure out how to update the photo taken to the the ImageView
+
+    */
 
     //--> 4 - START THE CAMERA INTENT HERE AFTER THE USER HAS ACCEPTED THE PERMISSION TO USE HIS CAMERA
     @Override
@@ -54,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
                     cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE); //-> create a file to save img
                     cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); //-> set img filename
+                   // cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri.toString()); //-> set img filename
 
 
                     // --> Start the Image capture intent
@@ -62,6 +69,20 @@ public class MainActivity extends AppCompatActivity {
             default:
                 super.onRequestPermissionsResult(requestCode,permissions,grantResults);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putString(MediaStore.EXTRA_OUTPUT, fileUri.toString());
+        //savedInstanceState.putString("image", image.toString());
+        super.onSaveInstanceState(savedInstanceState);
+
+    }
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        // Always call the superclass so it can restore the view hierarchy
+        super.onRestoreInstanceState(savedInstanceState);
+        fileUri = fileUri.parse(savedInstanceState.getString(MediaStore.EXTRA_OUTPUT));
+
     }
 
 
@@ -73,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
         upload  = (ImageButton) findViewById(R.id.upload);
         image = (ImageView) findViewById(R.id.photo);
         fileUri = null;
+
 
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,12 +138,15 @@ public class MainActivity extends AppCompatActivity {
                         cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE); //-> create a file to save img
                         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); //-> set img filename
+                       // cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri.toString());
 
 
                         // --> Start the Image capture intent
                         startActivityForResult(cameraIntent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 
                     }
+
+                    //---> You might need another else in case the phone is API <=23
                 }
 
 
@@ -133,23 +158,21 @@ public class MainActivity extends AppCompatActivity {
     protected  void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode,resultCode,data);
        // image.setImageDrawable(Drawable.createFromPath(photoPathname));
-        Log.d("MyCameraApp",  "GOT TO ACTIVITY RESULT!");
+        //Log.d("MyCameraApp",  "GOT TO ACTIVITY RESULT!");
+
         if(requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE){
             if(resultCode == RESULT_OK){
-                //-->Image captured and saved to fileUri specified in the intent
-                Log.d("MyCameraApp",  "RESULT_OK!");
+                if(data == null){
+                    Log.d(TAG, "The intent is empty/null");
+                    Log.d(TAG, "CHEcking fileUri:  " + fileUri.toString());
 
-
-                try{
-                    Uri targetUri = data.getData();
-                    Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
-                    image.setImageBitmap(bitmap);
-                }catch (FileNotFoundException fnfe){
-                    Log.wtf("onActivityResult", fnfe);
+                }else{
+                    Log.d(TAG, "The intent is NOT empty");
                 }
 
-//                Toast.makeText(this, "Image saved to:\n" +
-//                        data.getData(), Toast.LENGTH_LONG).show();
+
+
+                Toast.makeText(this, "Image saved to:\n" + data.getData(), Toast.LENGTH_LONG).show();
             } else if(resultCode == RESULT_CANCELED){
                 Log.d("MyCameraApp",  "RESULT_CANCELED!");
                 // user cancelled the image capture
